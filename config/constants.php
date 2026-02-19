@@ -1,29 +1,29 @@
-=<?php
+<?php
+// Start output buffering FIRST
+ob_start();
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Start Session
+// Start Session safely
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Live URL (Render)
+// Live URL
 define('SITEURL', 'https://food-ordering-deploy.onrender.com/');
 
-// Database Credentials from Render Environment
+// Database
 $host = getenv('DB_HOST');
 $user = getenv('DB_USER');
 $pass = getenv('DB_PASS');
 $db   = getenv('DB_NAME');
 $port = getenv('DB_PORT');
 
-// Initialize MySQLi
 $conn = mysqli_init();
 
-// Enable SSL (Required for TiDB Cloud)
 mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
 
-// Connect
 mysqli_real_connect(
     $conn,
     $host,
@@ -35,7 +35,6 @@ mysqli_real_connect(
     MYSQLI_CLIENT_SSL
 );
 
-// Check Connection
 if (!$conn) {
     die("Database Connection Failed: " . mysqli_connect_error());
 }
